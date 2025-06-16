@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5B1G0024 吳律奇</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    
+    <main class="fade-in">
+        <section class="portfolio-header">
+
+
+    <meta charset="UTF-8"> <!-- 設定字元編碼為 UTF-8，確保文字正確顯示 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 設定視口，使網頁在不同設備上響應式顯示 -->
+    <title>多功能整合頁面</title> <!-- 網頁標題 -->
+    <!-- 引入 React 核心函式庫 (開發版本)，用於構建使用者介面 -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <!-- 引入 ReactDOM 函式庫 (用於將 React 組件渲染到 DOM) -->
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- 引入 Babel 函式庫 (用於在瀏覽器中即時編譯 JSX 語法到 JavaScript) -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- 引入 Tailwind CSS CDN，提供所有 Tailwind CSS 預設類別，用於快速設計樣式 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style> /* 定義內聯 CSS 樣式，包含一些自定義變數和跨瀏覽器兼容性調整 */
+        /* 自定義顏色變數，使其更貼近原設計圖的色調 */
+        :root {
+            /* 計算機專用顏色 */
+            --calculator-bg: #3d3d3d; /* 計算機卡片背景 */
+            --calc-button-bg: #525252;     /* 計算機按鈕背景 */
+            --calc-operator-bg: #0d8a9e;   /* 計算機運算符按鈕背景 */
+            --calc-equal-bg: #4caf50;      /* 計算機等於按鈕背景 */
+            --calc-text-color: #e0e0e0;    /* 計算機按鈕文字顏色 */
+            --calc-display-text: #a0d9e8;  /* 計算機顯示屏數字顏色 */
+            --calc-error-text: #ef4444;    /* 計算機錯誤訊息顏色 */
+
+            /* 井字遊戲專用顏色 */
+            --tictactoe-dark-bg: #212529; /* 井字遊戲整體深色背景 (現在會被父層覆蓋，但保留) */
+            --tictactoe-card-bg: #343a40; /* 井字遊戲卡片背景 */
+            --tictactoe-text-blue: #a0d9e8; /* 井字遊戲藍色文字 */
+            --tictactoe-button-bg: #495057; /* 井字遊戲按鈕背景 */
+            --tictactoe-button-hover-bg: #6c757d; /* 井字遊戲按鈕懸停背景 */
+            --tictactoe-border-color: #6c757d; /* 井字遊戲邊框顏色 */
+            --tictactoe-x-color: #ef4444; /* 井字遊戲 X 的顏色 */
+            --tictactoe-o-color: #3b82f6; /* 井字遊戲 O 的顏色 */
+            --tictactoe-history-bg: #495057; /* 井字遊戲歷史記錄背景 */
+            --tictactoe-history-hover-bg: #6c757d; /* 井字遊戲歷史記錄懸停背景 */
+        }
+
+        /* 將自定義變數應用到類別，方便 Tailwind 使用 */
+        .calculator-bg { background-color: var(--calculator-bg); }
+        .calc-button-bg { background-color: var(--calc-button-bg); }
+        .calc-operator-bg { background-color: var(--calc-operator-bg); }
+        .calc-equal-bg { background-color: var(--calc-equal-bg); }
+        .calc-text-color { color: var(--calc-text-color); }
+        .calc-display-text { color: var(--calc-display-text); }
+        .calc-error-text { color: var(--calc-error-text); }
+
+        .tictactoe-card-bg { background-color: var(--tictactoe-card-bg); }
+        .tictactoe-text-blue { color: var(--tictactoe-text-blue); }
+        .tictactoe-button-bg { background-color: var(--tictactoe-button-bg); }
+        .tictactoe-button-hover-bg:hover { background-color: var(--tictactoe-button-hover-bg); }
+        .tictactoe-border-color { border-color: var(--tictactoe-border-color); }
+        .tictactoe-x-color { color: var(--tictactoe-x-color); }
+        .tictactoe-o-color { color: var(--tictactoe-o-color); }
+        .tictactoe-history-bg { background-color: var(--tictactoe-history-bg); }
+        .tictactoe-history-hover-bg:hover { background-color: var(--tictactoe-history-hover-bg); }
+
+        /* 計算機按鈕的通用懸停 (hover) 和點擊 (active) 效果 */
+        .calc-button-style:hover { /* 滑鼠懸停時 */
+            filter: brightness(1.2); /* 增加亮度 */
+            transform: translateY(-1px); /* 輕微向上移動 */
+        }
+        .calc-button-style:active { /* 按鈕被點擊時 */
+            filter: brightness(0.9); /* 輕微降低亮度 */
+            transform: translateY(0); /* 恢復原始位置 */
+        }
+        /* 確保計算機按鈕文字在被選中或高亮時不改變其背景 */
+        .calc-button-style::selection { /* 設定選取文字的樣式 */
+            background: transparent; /* 背景透明 */
+            color: inherit; /* 繼承父元素的文字顏色 */
+        }
+
+        /* 井字遊戲按鈕的通用懸停 (hover) 和點擊 (active) 效果 */
+        .tictactoe-button-style:hover {
+            filter: brightness(1.2);
+            transform: translateY(-1px);
+        }
+        .tictactoe-button-style:active {
+            filter: brightness(0.9);
+            transform: translateY(0);
+        }
+
+
+        /* ----- 針對特定瀏覽器隱藏滑桿預設外觀的樣式（僅用於 RGB 調色盤）----- */
+        input[type='range']::-webkit-slider-thumb { /* WebKit 瀏覽器 (Chrome, Safari) 的滑桿拇指 */
+            -webkit-appearance: none; /* 移除瀏覽器預設外觀 */
+            width: 20px; /* 拇指寬度 */
+            height: 20px; /* 拇指高度 */
+            border-radius: 50%; /* 圓形 */
+            background: #fff; /* 白色拇指 */
+            cursor: pointer; /* 滑鼠指針樣式 */
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* 陰影 */
+            margin-top: -6px; /* 調整垂直位置，使其與軌道對齊 */
+            border: 2px solid; /* 邊框 */
+        }
+        /* RGB 滑桿拇指邊框顏色 */
+        input[type='range'].accent-red-500::-webkit-slider-thumb { border-color: #ef4444; }
+        input[type='range'].accent-green-500::-webkit-slider-thumb { border-color: #22c55e; }
+        input[type='range'].accent-blue-500::-webkit-slider-thumb { border-color: #3b82f6; }
+
+        input[type='range']::-moz-range-thumb { /* Firefox 瀏覽器 的滑桿拇指 */
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #fff;
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            border: 2px solid;
+        }
+        /* RGB 滑桿拇指邊框顏色 */
+        input[type='range'].accent-red-500::-moz-range-thumb { border-color: #ef4444; }
+        input[type='range'].accent-green-500::-moz-range-thumb { border-color: #22c55e; }
+        input[type='range'].accent-blue-500::-moz-range-thumb { border-color: #3b82f6; }
+
+        input[type='range']::-ms-thumb { /* IE 和 Edge 瀏覽器 的滑桿拇指 */
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #fff;
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            border: 2px solid;
+        }
+        /* RGB 滑桿拇指邊框顏色 */
+        input[type='range'].accent-red-500::-ms-thumb { border-color: #ef4444; }
+        input[type='range'].accent-green-500::-ms-thumb { border-color: #22c55e; }
+        input[type='range'].accent-blue-500::-ms-thumb { border-color: #3b82f6; }
+
+        input[type="range"]::-webkit-slider-runnable-track { /* WebKit 瀏覽器滑桿軌道 */
+            background: transparent; /* 設置為透明，以便行內漸變樣式可見 */
+        }
+        input[type="range"]::-moz-range-track { /* Firefox 瀏覽器滑桿軌道 */
+            background: transparent;
+        }
+        input[type="range"]::-ms-track { /* IE 和 Edge 瀏覽器滑桿軌道 */
+            background: transparent;
+        }
+        /* ----- 隱藏捲軸的通用樣式 ----- */
+        /* 對 WebKit 瀏覽器 (Chrome, Safari) 隱藏捲軸本身 */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        /* 對所有瀏覽器隱藏捲軸軌道和按鈕 (IE, Edge, Firefox) */
+        .scrollbar-hide {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+</head>
+<body>
+    <!-- React 應用程式的根節點，所有 React 組件將會渲染到此 div 內部 -->
+    <div id="root"></div>
+
+    <script type="text/babel"> /* 使用 Babel 編譯器處理 JSX 語法 */
+        // 從全局 React 對象中解構 useState 和 useEffect Hooks
+        // 由於 React 和 ReactDOM 是透過 CDN 載入的 UMD (Universal Module Definition) 模組，它們會將 React 暴露為一個全局變數
+        const { useState, useEffect } = React;
+
+        // --- 1. RGB 顏色調色盤組件 ---
+        function RgbColorPicker() {
+            // 狀態變數：`red` 儲存紅色通道的值，預設為 255 (純白色)
+            const [red, setRed] = useState(255);
+            // 狀態變數：`green` 儲存綠色通道的值，預設為 255 (純白色)
+            const [green, setGreen] = useState(255);
+            // 狀態變數：`blue` 儲存藍色通道的值，預設為 255 (純白色)
+            const [blue, setBlue] = useState(255);
+
+            // 根據當前紅、綠、藍的值，計算出 CSS 可用的 RGB 顏色字串 (例如：rgb(255, 255, 255))
+            const rgbColor = `rgb(${red}, ${green}, ${blue})`;
+
+            // 輔助函式：將十進制顏色值轉換為兩位十六進制字串 (例如 255 變成 'FF', 10 變成 '0A')
+            const toHex = (c) => {
+                const hex = c.toString(16); // 將數值轉換為16進制字串
+                return hex.length === 1 ? '0' + hex : hex; // 如果只有一位，前面補零
+            };
+
+            // 使用 useEffect Hook 來計算 HEX 顏色碼
+            // 這個計算會在 `red`, `green`, `blue` 任何一個值改變時重新執行
+            const hexColor = `#${toHex(red)}${toHex(green)}${toHex(blue)}`.toUpperCase(); // 將 RGB 轉換為大寫 HEX 碼
+
+            return (
+                // RGB 調色盤組件的最外層容器
+                // - w-full max-w-md: 響應式寬度，最大寬度為 md 尺寸
+                // - mx-auto: 水平居中
+                // - p-4 my-4: 內邊距和垂直外邊距，提供與其他組件的間隔
+                // - bg-transparent: 背景完全透明
+                <div className="w-full max-w-md mx-auto p-4 my-4 bg-transparent">
+                    {/* RGB 調色盤的主卡片 */}
+                    {/* bg-gray-800: 深灰色背景, p-8: 內邊距, rounded-2xl: 大圓角, shadow-xl: 大陰影, text-white: 白色文字 */}
+                    <div className="bg-gray-800 p-8 rounded-2xl shadow-xl w-full text-white">
+                        {/* 標題 */}
+                        <h2 className="text-3xl font-bold mb-6 text-center text-blue-300">
+                            RGB 色彩面板
+                        </h2>
+
+                        {/* 紅色 (Red) 控制區塊 */}
+                        <div className="mb-4 flex items-center">
+                            <label htmlFor="red-slider" className="w-12 text-lg font-semibold text-red-400">R:</label>
+                            <input
+                                type="range" // 定義為範圍選擇器（滑桿）
+                                id="red-slider" // 唯一識別符
+                                min="0" max="255" // 設定滑桿的最小值和最大值
+                                value={red} // 綁定到 red 狀態變數，顯示當前值
+                                onChange={(e) => setRed(parseInt(e.target.value))} // 當滑桿值改變時觸發，將值解析為整數並更新 red 狀態
+                                className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-red-500 mr-4" // Tailwind 樣式
+                                style={{ background: `linear-gradient(to right, #000, #F00)` }} // 行內樣式，設定滑桿的背景漸變，從黑色到紅色
+                            />
+                            <span className="w-16 text-right text-xl font-mono text-red-300">
+                                {red} {/* 顯示紅色的數值 */}
+                            </span>
+                        </div>
+
+                        {/* 綠色 (Green) 控制區塊，結構與紅色控制區塊類似 */}
+                        <div className="mb-4 flex items-center">
+                            <label htmlFor="green-slider" className="w-12 text-lg font-semibold text-green-400">G:</label>
+                            <input
+                                type="range" id="green-slider" min="0" max="255"
+                                value={green} onChange={(e) => setGreen(parseInt(e.target.value))}
+                                className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-green-500 mr-4"
+                                style={{ background: `linear-gradient(to right, #000, #0F0)` }}
+                            />
+                            <span className="w-16 text-right text-xl font-mono text-green-300">
+                                {green}
+                            </span>
+                        </div>
+
+                        {/* 藍色 (Blue) 控制區塊，結構與紅色控制區塊類似 */}
+                        <div className="mb-6 flex items-center">
+                            <label htmlFor="blue-slider" className="w-12 text-lg font-semibold text-blue-400">B:</label>
+                            <input
+                                type="range" id="blue-slider" min="0" max="255"
+                                value={blue} onChange={(e) => setBlue(parseInt(e.target.value))}
+                                className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-blue-500 mr-4"
+                                style={{ background: `linear-gradient(to right, #000, #00F)` }}
+                            />
+                            <span className="w-16 text-right text-xl font-mono text-blue-300">
+                                {blue}
+                            </span>
+                        </div>
+
+                        {/* 顏色預覽方塊 */}
+                        {/* w-48 h-32: 固定寬高, mx-auto: 水平居中, mb-6: 下外邊距 */}
+                        {/* border border-gray-400: 細邊框, flex items-center justify-center: 內容居中 */}
+                        <div
+                            className="w-48 h-32 mx-auto mb-6 rounded-xl border border-gray-400 flex items-center justify-center"
+                            style={{ backgroundColor: rgbColor }} // 設定背景顏色為當前 RGB 顏色
+                        >
+                            {/* 這裡可以放一些內部的視覺元素，目前是空的 */}
+                        </div>
+
+                        {/* 顏色碼顯示區 */}
+                        <div className="text-center text-xl font-mono">
+                            <p className="text-blue-300">
+                                RGB({red}, {green}, {blue}) {/* 顯示 RGB 顏色碼 */}
+                            </p>
+                            <p className="text-purple-300">
+                                HEX: {hexColor} {/* 顯示 HEX 顏色碼 */}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // --- 2. 計算機組件 ---
+        function CalculatorApp() {
+            // 狀態變數：`display` 儲存顯示在螢幕上的當前數字或結果，預設為 '0'
+            const [display, setDisplay] = useState('0');
+            // 狀態變數：`expression` 儲存目前的完整運算式字串，預設為空字串
+            const [expression, setExpression] = useState('');
+            // 狀態變數：`error` 儲存任何錯誤訊息，預設為空字串
+            const [error, setError] = useState('');
+            // 狀態變數：`calculated` 標誌是否剛剛執行了計算，用於控制下一個數字輸入時是否清空顯示
+            const [calculated, setCalculated] = useState(false);
+
+            // 定義計算機按鈕的數據陣列
+            const buttons = [
+                // 第一行按鈕佈局： 7  8  9  ÷
+                { value: '7', handler: 'number' },    // 數字按鈕 7
+                { value: '8', handler: 'number' },    // 數字按鈕 8
+                { value: '9', handler: 'number' },    // 數字按鈕 9
+                { value: '÷', handler: 'operator' }, // 除號按鈕
+
+                // 第二行按鈕佈局： 4  5  6  ×
+                { value: '4', handler: 'number' },    // 數字按鈕 4
+                { value: '5', handler: 'number' },    // 數字按鈕 5
+                { value: '6', handler: 'number' },    // 數字按鈕 6
+                { value: '×', handler: 'operator' }, // 乘號按鈕
+
+                // 第三行按鈕佈局： 1  2  3  -
+                { value: '1', handler: 'number' },    // 數字按鈕 1
+                { value: '2', handler: 'number' },    // 數字按鈕 2
+                { value: '3', handler: 'number' },    // 數字按鈕 3
+                { value: '-', handler: 'operator' }, // 減號按鈕
+
+                // 第四行按鈕佈局 (0 . +) - **等號和加號位置已對調**
+                { value: '0', className: 'col-span-2', handler: 'number' }, // 數字按鈕 0，佔兩格寬度
+                { value: '.', handler: 'decimal' },   // 小數點按鈕
+                { value: '+', handler: 'operator' }, // 加號按鈕 (現在位於此行最右側)
+
+                // 第五行按鈕佈局 (C ← =) - **等號和加號位置已對調**
+                // 將 C 設定為佔兩格寬度，並將 = 放在最後一格，使其能對齊最右邊的運算符號欄
+                { value: 'C', className: 'col-span-2', handler: 'clear' },     // 清除按鈕 (佔兩格寬度)
+                { value: '←', handler: 'backspace' }, // 退格按鈕 (佔一格寬度)
+                { value: '=', handler: 'calculate' } // 等號按鈕 (現在位於此行最右側)
+            ];
+
+            // 處理數字按鈕點擊事件
+            const handleNumberClick = (value) => {
+                setError(''); // 清除任何先前的錯誤訊息
+                // 如果顯示為 '0' 或剛計算完畢 (calculated 為 true)，則替換顯示；否則追加數字
+                if (display === '0' || calculated) {
+                    setDisplay(value); // 將顯示屏更新為新按下的數字
+                    setExpression(value); // 將運算式更新為新按下的數字
+                    setCalculated(false); // 重置計算標誌為 false
+                } else {
+                    // 避免多個零開頭的情況，除非是輸入小數點
+                    if (value === '0' && display === '0' && !expression.includes('.')) {
+                        return; // 如果顯示已經是 '0' 且運算式中沒有小數點，則再次按 '0' 無效
+                    }
+                    setDisplay((prev) => prev + value); // 在顯示屏當前數字後面追加新數字
+                    setExpression((prev) => prev + value); // 在運算式後面追加新數字
+                }
+            };
+
+            // 處理運算符號按鈕點擊事件 (+, -, *, /)
+            const handleOperatorClick = (op) => {
+                setError(''); // 清除任何先前的錯誤訊息
+                setCalculated(false); // 重置計算標誌為 false
+
+                // 確保運算式不為空才能添加運算符 (允許以負號開頭，例如 -5)
+                if (expression === '' && op !== '-') {
+                    return; // 如果運算式為空且不是負號，則不處理此運算符
+                }
+
+                const lastChar = expression.slice(-1); // 取得運算式末尾字元
+                const operators = ['+', '-', '*', '/']; // 定義所有運算符號
+
+                // 如果運算式末尾已經是運算符號
+                if (operators.includes(lastChar)) {
+                    // 特殊處理：如果新的運算符是負號，且前一個不是負號，則允許追加負號（例如處理 5*-3 這樣的負數）
+                    if (op === '-' && lastChar !== '-') {
+                        setExpression((prev) => prev + op); // 在運算式後面追加負號
+                        setDisplay(op); // 顯示負號在螢幕上
+                    } else if (op !== '-' && lastChar === '-') {
+                         // 如果新的運算符不是負號，且前一個是負號，則替換掉負號 (例如：5*- 變成 5/)
+                         setExpression((prev) => prev.slice(0, -1) + op); // 移除末尾負號，追加新的運算符
+                         setDisplay(op); // 顯示新的運算符在螢幕上
+                    } else {
+                        // 否則，替換掉末尾的運算符（例如：5++ 變成 5+；5** 變成 5*）
+                        setExpression((prev) => prev.slice(0, -1) + op); // 移除末尾運算符，追加新的運算符
+                        setDisplay(op); // 顯示新的運算符在螢幕上
+                    }
+                } else {
+                    // 否則 (運算式末尾是數字)，直接追加運算符號
+                    setExpression((prev) => prev + op); // 在運算式後面追加運算符
+                    setDisplay(op); // 在顯示屏上顯示當前運算符號
+                }
+            };
+
+            // 處理小數點按鈕點擊事件
+            const handleDecimalClick = () => {
+                setError(''); // 清除任何先前的錯誤訊息
+                setCalculated(false); // 重置計算標誌為 false
+
+                // 分割運算式以取得當前輸入的數字部分（處理例如 '1.2+3' 的情況）
+                const parts = expression.split(/[-+*/]/);
+                const currentNumber = parts[parts.length - 1]; // 取得運算式中最後一個數字部分
+
+                // 檢查當前數字部分是否已經包含小數點
+                if (!currentNumber.includes('.')) {
+                    // 如果運算式為空或以運算符結尾，則在前面加 '0' 再加小數點 (例如直接按 . 會變成 0.)
+                    if (expression === '' || ['+', '-', '*', '/'].includes(expression.slice(-1))) {
+                        setDisplay('0.'); // 顯示 '0.'
+                        setExpression((prev) => prev + '0.'); // 運算式追加 '0.'
+                    } else {
+                        // 否則 (運算式末尾是數字)，直接追加小數點
+                        setDisplay((prev) => prev + '.'); // 顯示屏追加 '.'
+                        setExpression((prev) => prev + '.'); // 運算式追加 '.'
+                    }
+                }
+            };
+
+            // 處理清除 (C) 按鈕點擊事件
+            const handleClearClick = () => {
+                setDisplay('0'); // 重置顯示屏為 '0'
+                setExpression(''); // 清空運算式字串
+                setError(''); // 清除錯誤訊息
+                setCalculated(false); // 重置計算標誌為 false
+            };
+
+            // 處理退格 (←) 按鈕點擊事件
+            const handleBackspaceClick = () => {
+                setError(''); // 清除任何先前的錯誤訊息
+                setCalculated(false); // 重置計算標誌為 false
+
+                // 如果顯示為 '0' 或運算式為空，則不做任何操作
+                if (display === '0' && expression === '') {
+                    return; // 直接返回，不執行任何操作
+                }
+                
+                // 刪除運算式字串中的最後一個字元
+                const newExpression = expression.slice(0, -1);
+                setExpression(newExpression); // 更新運算式狀態
+
+                // 根據新的運算式字串更新顯示屏內容
+                if (newExpression === '') {
+                    setDisplay('0'); // 如果運算式為空，顯示屏顯示 '0'
+                } else {
+                    // 嘗試從新的運算式中提取最後一個數字或運算符以顯示
+                    const lastChar = newExpression.slice(-1); // 取得新運算式的末尾字元
+                    const operators = ['+', '-', '*', '/']; // 定義所有運算符號
+                    if (operators.includes(lastChar)) {
+                        setDisplay(lastChar); // 如果最後一個字元是運算符，則顯示該運算符
+                    } else {
+                        // 提取最後一個數字部分，如果沒有數字部分則顯示整個新運算式
+                        const parts = newExpression.split(/[-+*/]/);
+                        setDisplay(parts[parts.length - 1] || newExpression); // 顯示最後一個數字或整個表達式
+                    }
+                }
+            };
+
+            // 處理等於 (=) 按鈕點擊事件，執行運算
+            const handleCalculateClick = () => {
+                setError(''); // 清除任何先前的錯誤訊息
+
+                if (expression === '') { // 如果運算式為空，則不做任何操作
+                    setDisplay('0'); // 顯示 '0'
+                    return; // 直接返回
+                }
+
+                try {
+                    // 替換運算符，使 JavaScript 的 eval 函數能正確解析
+                    // 將 '×' 替換為 JavaScript 的乘法符號 '*'
+                    // 將 '÷' 替換為 JavaScript 的除法符號 '/'
+                    const evalExpression = expression.replace(/×/g, '*').replace(/÷/g, '/');
+
+                    // 使用 eval 函數計算結果（注意：eval 存在潛在安全風險，但在這裡作為簡單計算機範例可接受）
+                    let result = eval(evalExpression);
+
+                    // 檢查是否為除以零的情況導致的 Infinity (無限大)
+                    if (result === Infinity || result === -Infinity) {
+                        setError('錯誤：不能除以零'); // 設置除以零的錯誤訊息
+                        setDisplay('0'); // 顯示屏顯示 '0' 或其他提示
+                        setExpression(''); // 清空運算式
+                        return; // 終止函數執行
+                    }
+
+                    // 處理浮點數精度問題，將結果限制在一定小數位數
+                    if (Number.isFinite(result) && result % 1 !== 0) { // 如果結果是有限數字且不是整數
+                        result = parseFloat(result.toFixed(8)); // 將結果四捨五入到 8 位小數
+                    }
+
+                    setDisplay(String(result)); // 將計算結果轉換為字串並顯示在螢幕上
+                    setExpression(String(result)); // 將結果作為新的運算式起點，方便連續運算
+                    setCalculated(true); // 設定已計算標誌為 true
+                } catch (e) {
+                    // 捕獲任何運算錯誤（例如無效的運算式語法）
+                    setError('運算式錯誤'); // 設置運算式錯誤訊息
+                    setDisplay('0'); // 顯示屏顯示 '0'
+                    setExpression(''); // 清空運算式
+                }
+            };
+
+            // 根據按鈕的類型 (handlerType) 觸發對應的處理函數
+            const handleButtonClick = (handlerType, value) => {
+                switch (handlerType) {
+                    case 'number': // 如果是數字按鈕
+                        handleNumberClick(value); // 呼叫數字按鈕處理函數
+                        break;
+                    case 'operator': // 如果是運算符按鈕
+                        handleOperatorClick(value); // 呼叫運算符按鈕處理函數
+                        break;
+                    case 'decimal': // 如果是小數點按鈕
+                        handleDecimalClick(); // 呼叫小數點處理函數
+                        break;
+                    case 'clear': // 如果是清除按鈕 (C)
+                        handleClearClick(); // 呼叫清除處理函數
+                        break;
+                    case 'backspace': // 如果是退格按鈕 (←)
+                        handleBackspaceClick(); // 呼叫退格處理函數
+                        break;
+                    case 'calculate': // 如果是等號按鈕 (=)
+                        handleCalculateClick(); // 呼叫計算處理函數
+                        break;
+                    default: // 其他未定義的類型 (應不發生)
+                        break;
+                }
+            };
+
+            return (
+                // 計算機組件的最外層容器
+                // - w-full max-w-xs sm:max-w-sm: 響應式寬度，最大寬度為 sm 尺寸
+                // - mx-auto: 水平居中
+                // - p-4 my-4: 內邊距和垂直外邊距，提供與其他組件的間隔
+                // - bg-transparent: 背景完全透明
+                <div className="w-full max-w-xs sm:max-w-sm mx-auto p-4 my-4 bg-transparent">
+                    {/* 計算機主體卡片 */}
+                    {/* calculator-bg: 使用自定義的計算機背景顏色變數, p-6: 內邊距 */}
+                    {/* rounded-none: 移除所有圓角，實現直角, shadow-2xl: 大型陰影效果 */}
+                    <div className="calculator-bg p-6 rounded-none shadow-2xl w-full">
+                        {/* 標題 */}
+                        <h2 className="text-3xl font-bold mb-6 text-center text-gray-200">計算機</h2>
+
+                        {/* 顯示螢幕區域 */}
+                        {/* bg-gray-700: 背景色, h-20: 高度, rounded-none: 移除圓角, mb-4: 底部外邊距, p-4: 內邊距 */}
+                        {/* flex items-center justify-end: Flexbox 佈局，內容靠右並垂直居中, text-right: 文字右對齊 */}
+                        {/* overflow-hidden: 隱藏溢出內容, shadow-inner: 內部陰影效果 */}
+                        <div className="bg-gray-700 h-20 rounded-none mb-4 p-4 flex items-center justify-end text-right overflow-hidden shadow-inner">
+                            {/* 實際顯示文本的容器 */}
+                            {/* flex-1: 佔據所有可用空間, overflow-x-auto: 允許橫向滾動 (如果內容超出) */}
+                            {/* whitespace-nowrap: 防止文字換行, scrollbar-hide: 自定義類別，用於隱藏捲軸 (解決儀表板捲軸問題) */}
+                            <div className="flex-1 overflow-x-auto whitespace-nowrap scrollbar-hide">
+                                {/* 運算式顯示，字體較小，顏色較淡 */}
+                                <p className="text-gray-400 text-sm mb-1">{expression}</p>
+                                {/* 當前數字或結果顯示，字體大，顏色為自定義的 display-text */}
+                                <p className="calc-display-text text-4xl font-light">{display}</p>
+                            </div>
+                        </div>
+
+                        {/* 錯誤訊息顯示區塊 */}
+                        {/* {error && (...)}: 只有當 `error` 狀態有值時才顯示此區塊 */}
+                        {/* bg-red-800: 紅色背景, text-white: 白色文字, text-center: 居中, p-2: 內邊距 */}
+                        {/* rounded-none: 移除圓角，實現直角, mb-4: 底部外邊距, error-text: 自定義錯誤文字顏色 */}
+                        {error && (
+                            <div className="bg-red-800 text-white text-center p-2 rounded-none mb-4 calc-error-text">
+                                {error} {/* 顯示錯誤訊息內容 */}
+                            </div>
+                        )}
+
+                        {/* 按鈕網格佈局容器 */}
+                        {/* grid grid-cols-4: 設定為 4 欄的網格佈局, gap-3: 網格中每個項目之間的間距 */}
+                        <div className="grid grid-cols-4 gap-3">
+                            {/* 遍歷 buttons 陣列，為每個按鈕數據渲染一個 <button> 元素 */}
+                            {buttons.map((button, index) => (
+                                <button
+                                    key={index} // 為列表中的每個項目提供唯一的鍵 (React 渲染優化需要)
+                                    onClick={() => handleButtonClick(button.handler, button.value)} // 點擊事件處理函數
+                                    // 根據按鈕的屬性動態生成 CSS 類別
+                                    className={`
+                                        calc-button-style /* 套用通用按鈕樣式 (懸停/點擊效果) */
+                                        ${button.className || 'col-span-1'} /* 套用按鈕自定義的類別 (例如 col-span-2)，如果沒有則預設佔一格 */
+                                        ${button.handler === 'operator' ? 'calc-operator-bg' : // 如果是運算符，則應用運算符背景
+                                          button.handler === 'calculate' ? 'calc-equal-bg' : 'calc-button-bg'} /* 如果是等號，則應用等號背景，否則應用預設按鈕背景 */
+                                        calc-text-color /* 設定按鈕文字顏色 */
+                                        font-bold /* 文字粗體 */
+                                        py-4 /* 垂直內邊距 */
+                                        rounded-none /* 移除圓角，使按鈕呈現直角 */
+                                        text-2xl /* 字體大小 */
+                                        transition-all /* 啟用所有 CSS 屬性的過渡動畫 */
+                                        duration-150 /* 過渡動畫持續時間為 150 毫秒 */
+                                        ease-in-out /* 過渡動畫的緩動函數 */
+                                        shadow-lg /* 按鈕外部的大陰影 */
+                                        active:shadow-inner /* 按鈕點擊時顯示內部陰影 */
+                                        focus:outline-none focus:ring-2 focus:ring-opacity-75 /* 聚焦時移除預設輪廓，並添加光環效果 */
+                                    `}
+                                >
+                                    {/* 判斷按鈕值是否為 '←' (退格符號)，如果是則渲染 SVG 圖標，否則渲染文字值 */}
+                                    {button.value === '←' ? (
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                                        </svg>
+                                    ) : (
+                                        button.value /* 渲染按鈕上的文字或符號 */
+                                    )}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // --- 3. 井字遊戲組件 ---
+        // 輔助函數：判斷井字遊戲的勝利者
+        function calculateWinner(squares) {
+            // 定義所有可能的獲勝線條（索引組合）
+            const lines = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // 橫線
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // 直線
+                [0, 4, 8], [2, 4, 6], // 斜線
+            ];
+            // 遍歷所有獲勝線條
+            for (let i = 0; i < lines.length; i++) {
+                const [a, b, c] = lines[i]; // 解構出線條上的三個方塊索引
+                // 檢查這三個方塊是否有相同的玩家標記 (X 或 O) 且不為空
+                if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+                    return squares[a]; // 返回獲勝者的標記 (X 或 O)
+                }
+            }
+            return null; // 如果沒有獲勝者，返回 null
+        }
+
+        // 方塊組件：代表井字遊戲棋盤上的一個單獨方塊
+        function Square({ value, onClick }) {
+            // 根據 value (X 或 O) 應用不同的文字顏色類別
+            const textColorClass = value === 'X' ? 'tictactoe-x-color' : 'tictactoe-o-color';
+            return (
+                // 按鈕樣式：固定寬高，Flexbox 居中文字，大字體，粗體，邊框，背景色，懸停/點擊效果
+                <button
+                    className={`
+                        w-20 h-20 sm:w-24 sm:h-24 /* 響應式寬高 */
+                        flex items-center justify-center /* 內容居中 */
+                        text-5xl sm:text-6xl font-bold /* 響應式字體大小和粗體 */
+                        border tictactoe-border-color /* 邊框顏色 */
+                        tictactoe-button-bg /* 按鈕背景色 */
+                        tictactoe-button-hover-bg /* 懸停背景色 */
+                        transition-all duration-150 rounded-lg /* 平滑過渡和圓角 */
+                        ${textColorClass} /* 應用 X 或 O 的顏色類別 */
+                    `}
+                    onClick={onClick} // 點擊事件處理
+                >
+                    {value} {/* 顯示方塊的值 (X, O 或空) */}
+                </button>
+            );
+        }
+
+        // 棋盤組件：渲染 3x3 的井字遊戲棋盤
+        function Board({ squares, onClick }) {
+            // 渲染單個方塊的輔助函數
+            const renderSquare = (i) => {
+                return (
+                    <Square
+                        key={i} // React 列表渲染的 key
+                        value={squares[i]} // 傳遞方塊的值給 Square 組件
+                        onClick={() => onClick(i)} // 傳遞點擊處理函數給 Square 組件
+                    />
+                );
+            };
+
+            return (
+                // 棋盤容器：網格佈局，3x3 欄和行，間距
+                <div className="grid grid-cols-3 grid-rows-3 gap-2">
+                    {/* 渲染所有 9 個方塊，從索引 0 到 8 */}
+                    {[0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => renderSquare(i))}
+                </div>
+            );
+        }
+
+        // 遊戲組件：井字遊戲的主要應用邏輯和狀態管理
+        function TicTacToeGame() {
+            // 狀態變數：`history` 儲存所有過去的棋盤狀態，每個元素是一個包含 `squares` 陣列的物件
+            const [history, setHistory] = useState([{ squares: Array(9).fill(null) }]);
+            // 狀態變數：`currentMove` 追蹤當前正在查看的歷史步驟索引
+            const [currentMove, setCurrentMove] = useState(0);
+            // 判斷下一個玩家是否是 'X' (偶數步數是 X，奇數步數是 O)
+            const xIsNext = currentMove % 2 === 0;
+            // 取得當前棋盤狀態 (從 history 陣列中取出 `currentMove` 對應的棋盤)
+            const currentSquares = history[currentMove].squares;
+            // 判斷遊戲是否結束 (有贏家或平局)
+            // `currentMove === 9` 表示所有 9 個方塊都已填滿，且沒有贏家，則為平局
+            const gameOver = calculateWinner(currentSquares) || currentMove === 9;
+
+            // 處理方塊點擊事件
+            const handleClick = (i) => {
+                // 如果遊戲已經結束 (有贏家) 或點擊的方塊已經有值，則不處理點擊
+                if (calculateWinner(currentSquares) || currentSquares[i]) {
+                    return;
+                }
+
+                // 複製當前棋盤狀態，以實現不可變性更新 (React 推薦的方式)
+                const nextSquares = currentSquares.slice();
+                // 根據當前玩家設置方塊值 (X 或 O)
+                if (xIsNext) {
+                    nextSquares[i] = 'X';
+                } else {
+                    nextSquares[i] = 'O';
+                }
+
+                // 更新歷史記錄：只保留從第一步到當前步的歷史，並添加新的一步
+                // `history.slice(0, currentMove + 1)` 確保如果跳轉到過去的某一步並重新下棋，會覆蓋掉後面的歷史
+                setHistory([...history.slice(0, currentMove + 1), { squares: nextSquares }]);
+                // 更新當前步數到最新一步 (新的棋盤狀態)
+                setCurrentMove(currentMove + 1);
+            };
+
+            // 跳轉到歷史記錄中的某一步
+            const jumpTo = (nextMove) => {
+                setCurrentMove(nextMove); // 更新當前步數到指定步
+            };
+
+            // 根據當前遊戲狀態顯示不同的文字 (下一個玩家 / 贏家 / 平局)
+            const winner = calculateWinner(currentSquares); // 計算當前贏家
+            let status; // 狀態顯示文字
+            if (winner) {
+                status = `贏家: ${winner}`; // 如果有贏家，顯示贏家
+            } else if (currentMove === 9) { // 如果下了 9 步棋且沒有贏家，則是平局
+                status = '平局！';
+            } else {
+                status = `下一個玩家: ${xIsNext ? 'X' : 'O'}`; // 顯示下一個玩家
+            }
+
+            // 生成遊戲歷史步驟列表的 JSX 元素
+            const moves = history.map((step, move) => {
+                // 根據步數生成描述文字
+                const description = move > 0 ?
+                    `前往步驟 #${move}` : // 非第一步顯示步數
+                    '遊戲開始'; // 第一步顯示「遊戲開始」
+                return (
+                    <li key={move} className="mb-2"> {/* 每個歷史步驟一個列表項，底部有外邊距 */}
+                        <button
+                            onClick={() => jumpTo(move)} // 點擊按鈕跳轉到該步驟
+                            // 按鈕樣式：背景色、文字顏色、圓角、內邊距、懸停效果
+                            className={`
+                                tictactoe-history-bg tictactoe-text-color /* 自定義歷史按鈕背景和文字顏色 */
+                                w-full py-2 px-4 rounded-lg /* 寬度佔滿，垂直內邊距，圓角 */
+                                text-left transition-all duration-150 /* 文字左對齊，平滑過渡 */
+                                ${move === currentMove ? 'font-bold bg-opacity-70 tictactoe-text-blue' : 'tictactoe-history-hover-bg'} /* 當前步驟加粗並強調顏色 */
+                            `}
+                        >
+                            {description} {/* 顯示步驟描述 */}
+                        </button>
+                    </li>
+                );
+            });
+
+            return (
+                // 井字遊戲組件的最外層容器
+                // - w-full max-w-2xl: 響應式寬度，最大寬度為 2xl 尺寸
+                // - mx-auto: 水平居中
+                // - p-4 my-4: 內邊距和垂直外邊距，提供與其他組件的間隔
+                // - bg-transparent: 背景完全透明
+                <div className="w-full max-w-2xl mx-auto p-4 my-4 bg-transparent">
+                    {/* 井字遊戲的主卡片容器：Flexbox 佈局，響應式排版 (sm:flex-row) */}
+                    {/* tictactoe-card-bg: 自定義卡片背景, p-6: 內邊距, rounded-2xl: 大圓角, shadow-2xl: 大陰影 */}
+                    <div className="tictactoe-card-bg p-6 rounded-2xl shadow-2xl flex flex-col sm:flex-row gap-6 w-full">
+                        {/* 遊戲區塊 (左側：標題、狀態、棋盤) */}
+                        <div className="flex flex-col items-center flex-1">
+                            {/* 遊戲標題 */}
+                            <h2 className="text-3xl font-bold mb-6 text-center text-gray-200">井字遊戲</h2>
+                            {/* 遊戲狀態顯示 (下一個玩家 / 贏家 / 平局) */}
+                            <div className="text-xl sm:text-2xl font-semibold mb-4 text-center tictactoe-text-blue">
+                                {status} {/* 顯示遊戲狀態文字 */}
+                            </div>
+                            {/* 渲染棋盤組件 */}
+                            <Board squares={currentSquares} onClick={handleClick} />
+                        </div>
+
+                        {/* 遊戲歷程區塊 (右側) */}
+                        <div className="flex flex-col flex-1 sm:ml-6">
+                            {/* 歷史記錄標題 */}
+                            <h2 className="text-2xl font-bold mb-4 text-center text-gray-200">遊戲歷程</h2>
+                            {/* 歷史記錄列表容器：固定高度，垂直滾動，隱藏捲軸 */}
+                            {/* list-none p-0 m-0: 移除列表預設樣式, h-64: 固定高度, overflow-y-auto: 垂直滾動 */}
+                            {/* scrollbar-hide: 自定義類別，用於隱藏捲軸 (解決歷史記錄捲軸問題) */}
+                            <ol className="list-none p-0 m-0 h-64 overflow-y-auto scrollbar-hide">
+                                {moves} {/* 渲染所有歷史步驟 */}
+                            </ol>
+                            {/* 重新開始遊戲按鈕，只有在遊戲結束或有贏家時顯示 */}
+                            {gameOver && (
+                                <button
+                                    onClick={() => jumpTo(0)} /* 點擊回到遊戲開始 (跳轉到第 0 步) */
+                                    className="mt-4 w-full py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors duration-150 shadow-md"
+                                >
+                                    重新開始遊戲
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // --- 主整合應用程式組件 ---
+        // 這個組件將三個獨立的應用程式組件垂直堆疊顯示
+        function MainCombinedApp() {
+            return (
+                // 最外層容器：設定整個頁面的背景和佈局
+                // - min-h-screen: 確保容器高度至少為視窗高度，以容納所有內容
+                // - bg-transparent: 背景完全透明 (符合需求 2)
+                // - overflow-y-hidden: 隱藏垂直方向的頁面捲軸 (符合需求 2)
+                // - flex flex-col items-center: 使用 Flexbox 將子組件垂直堆疊並水平居中
+                // - py-8: 頂部和底部有垂直內邊距，提供一些留白 (符合需求 3 的「最小邊界」概念，但仍保留一點空間美觀)
+                <div className="min-h-screen bg-transparent overflow-y-hidden flex flex-col items-center py-8">
+                    {/* 1. RGB 顏色調色盤區塊 */}
+                    <RgbColorPicker />
+
+                    {/* 2. 計算機區塊 */}
+                    <CalculatorApp />
+
+                    {/* 3. 井字遊戲區塊 */}
+                    <TicTacToeGame />
+                </div>
+            );
+        }
+
+        // 使用 ReactDOM 的 createRoot API 創建 React 應用程式的根節點
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        // 將 MainCombinedApp 組件渲染到 ID 為 'root' 的 DOM 元素中
+        root.render(<MainCombinedApp />);
+    </script>
+
+    
+  </section>
+  
+  
+
+
+    </main>
+
+    
+
+</body>
+</html>
