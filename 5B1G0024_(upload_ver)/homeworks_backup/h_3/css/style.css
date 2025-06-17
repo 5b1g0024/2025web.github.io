@@ -1,0 +1,470 @@
+/* 基礎樣式 */
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2c3e50;
+    --accent-color: #e74c3c;
+    --light-color: #cecece;
+    --dark-color: #2c3e50;
+    --text-color: #333;
+    --text-light: #7f8c8d;
+    --transition-speed: 0.3s;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: #ecf5ff;
+    overflow-x: hidden;
+}
+
+/* 頁面過渡效果 */
+.page-transition {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--primary-color);
+    z-index: 999;
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.7s ease-in-out;
+}
+
+.page-transition.active {
+    transform: scaleY(1);
+    transform-origin: top;
+}
+
+/* 進場動畫 */
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 1s ease-in forwards;
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+.slide-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUp 0.8s ease-out forwards;
+}
+
+@keyframes slideUp {
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slide-left {
+    opacity: 0;
+    transform: translateX(-20px);
+    animation: slideLeft 0.8s ease-out forwards;
+}
+
+@keyframes slideLeft {
+    to { 
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.slide-right {
+    opacity: 0;
+    transform: translateX(20px);
+    animation: slideRight 0.8s ease-out forwards;
+}
+
+@keyframes slideRight {
+    to { 
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.scale-in {
+    opacity: 0;
+    transform: scale(0.8);
+    animation: scaleIn 0.8s ease-out forwards;
+}
+
+@keyframes scaleIn {
+    to { 
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* 延遲動畫 */
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.4s; }
+.delay-3 { animation-delay: 0.6s; }
+.delay-4 { animation-delay: 0.8s; }
+.delay-5 { animation-delay: 1s; }
+
+/* 懸浮導航欄 */
+.floating-nav {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    background: white;
+    padding: 10px 20px;
+    border-radius: 50px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+}
+
+.floating-nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 15px;
+    color: var(--text-light);
+    text-decoration: none;
+    transition: all var(--transition-speed) ease;
+    position: relative;
+}
+
+.floating-nav a i {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.floating-nav a span {
+    font-size: 0.7rem;
+    opacity: 0;
+    position: absolute;
+    bottom: -15px;
+    transition: all var(--transition-speed) ease;
+}
+
+.floating-nav a:hover {
+    color: var(--primary-color);
+}
+
+.floating-nav a:hover span {
+    opacity: 1;
+    bottom: -20px;
+}
+
+.floating-nav a.active {
+    color: var(--primary-color);
+}
+
+/* 主內容區 */
+main {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 100px; /* 給導航欄留空間 */
+}
+
+/* 首頁樣式 */
+.hero {
+    text-align: center;
+    padding: 5rem 1rem;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.highlight {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    background: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: all var(--transition-speed) ease;
+    margin-top: 1rem;
+}
+
+.btn:hover {
+    background: var(--secondary-color);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* 作品集網格 */
+.work-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+
+}
+
+.work-item {
+
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all var(--transition-speed) ease;
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+.work-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.work-item img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+}
+
+.work-item h3 {
+    padding: 1rem;
+}
+
+/* 關於我頁面 */
+.about-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3rem;
+    align-items: center;
+    margin-top: 3rem;
+}
+
+.about-content {
+    flex: 1;
+    min-width: 300px;
+}
+
+.about-image {
+    flex: 1;
+    min-width: 300px;
+    text-align: center;
+}
+
+.about-image img {
+    max-width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.skill-bar {
+    height: 10px;
+    background: #eee;
+    border-radius: 5px;
+    margin: 0.5rem 0 1.5rem;
+}
+
+.skill-level {
+    height: 100%;
+    background: var(--primary-color);
+    border-radius: 5px;
+    transition: width 1s ease-in-out;
+}
+
+.timeline {
+    position: relative;
+    margin: 2rem 0;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--primary-color);
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 2rem;
+    margin-bottom: 2rem;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: white;
+    border: 3px solid var(--primary-color);
+}
+
+/* 作品集頁面 */
+.portfolio-header {
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+.portfolio-item {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin: 3rem 0;
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.portfolio-image {
+    flex: 1;
+    min-width: 300px;
+}
+
+.portfolio-image img {
+    height: 200px;
+    border-radius: 5px;
+}
+
+.portfolio-content {
+    flex: 1;
+    min-width: 300px;
+}
+
+.project-details {
+    list-style: none;
+    margin: 1rem 0;
+}
+
+.project-details li {
+    margin: 0.5rem 0;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2rem;
+    }
+    
+    .floating-nav a span {
+        display: none;
+    }
+    
+    .floating-nav a i {
+        font-size: 1.5rem;
+        margin-bottom: 0;
+    }
+    
+    .about-section, .portfolio-item {
+        flex-direction: column;
+    }
+    
+}
+
+
+/* 簽名容器 */
+.signature-container {
+    margin: 2rem 0;
+    text-align: center;
+    opacity: 0; /* 初始隱藏 */
+    animation: fadeIn 1s ease-out 0.8s forwards; /* 0.8秒延遲後淡入 */
+}
+
+/* 簽名圖像 */
+.signature {
+    height: 80px; /* 調整適合你簽名的高度 */
+    width: auto;
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
+}
+
+/* 淡入動畫 */
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+
+
+
+
+
+
+
+
+
+/* 技能區塊容器樣式 (可選，如果已存在類似的容器樣式可省略) */
+.skills-container {
+    background-color: #fff; /* 技能卡片背景色 */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+    margin: 0 auto 20px auto; /* 居中，底部外邊距 */
+}
+
+
+
+
+/* 技能進度條的外部容器 */
+.skill-bar {
+    width: 100%;
+    background-color: #e0e0e0; /* 進度條軌道背景色 */
+    border-radius: 5px; /* 圓角 */
+    height: 10px; /* 進度條高度 */
+    overflow: hidden; /* 確保內部進度條不會溢出 */
+}
+
+/* 技能進度條的實際進度顯示（動畫部分） */
+.skill-level.animated {
+    height: 100%; /* 佔滿父容器高度 */
+    background-color: var(--primary-color); /* 進度條填充色 */
+    border-radius: 5px; /* 圓角 */
+    animation: bouncing-skill 0.5s ease-in-out infinite alternate forwards;
+}
+
+/* 定義關鍵影格動畫 */
+@keyframes bouncing-skill {
+    0% {
+        width: 25%; /* 動畫開始時的寬度 (初始值) */
+    }
+    50% {
+        width: 95%; /* 動畫中間點時的寬度 */
+    }
+    100% {
+        width: 25%; /* 動畫結束時的寬度 (由於 alternate，下次會反向播放到 75%) */
+    }
+}
+
+
+@keyframes slideInLeft {
+    to { /* 動畫結束時的狀態 */
+        opacity: 1; /* 完全不透明 */
+        transform: translateX(0); /* 恢復原始位置 */
+    }
+}
+
+
+
+
+/* 動畫屬性：
+     * bouncing-skill: 動畫名稱
+     * 3s: 動畫持續時間為 3 秒
+     * ease-in-out: 動畫速度曲線 (開始和結束慢，中間快)
+     * infinite: 無限次重複動畫
+     * alternate: 動畫在每次迭代時反向播放 (從 25% 到 75%，然後從 75% 回到 25%)
+     * forwards: 動畫在結束後停留在最後一個關鍵影格的狀態 (這裡因為 infinite，所以會一直循環)
+     */
