@@ -115,7 +115,7 @@ body {
 /* 懸浮導航欄 */
 .floating-nav {
     position: fixed;
-    bottom: 20px;
+    top: 20px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
